@@ -94,10 +94,13 @@ etcdctl  --endpoints=https://${NODE_IP}:2379  --ca-file=/etc/etcd/ssl/ca.pem  --
 yum install kubelet kubeadm kubectl kubernetes-cni docker -y
 ```
 10. 在3台主机禁用docker启动项SELinux
-``` sed -i 's/--selinux-enabled/--selinux-enabled=false/g' /etc/sysconfig/docker ```
+``` 
+sed -i 's/--selinux-enabled/--selinux-enabled=false/g' /etc/sysconfig/docker 
+```
 11. 在3台主机的kubelet配置文件中添加如下参数
-> sed -i '9a\Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/osoulmate/pause-amd64:3.0"' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
->
+```
+sed -i '9a\Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/osoulmate/pause-amd64:3.0"' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+```
 12. 在3台主机添加docker加速器配置（可选）
 ``` 
  cat <<EOF > /etc/docker/daemon.json
@@ -107,53 +110,55 @@ yum install kubelet kubeadm kubectl kubernetes-cni docker -y
  EOF
 ```
 13. 在3台主机分别执行以下命令
-> systemctl daemon-reload
->
-> systemctl enable docker && systemctl restart docker
->
-> systemctl enable kubelet && systemctl restart kubelet
->
+```
+systemctl daemon-reload
+systemctl enable docker && systemctl restart docker
+systemctl enable kubelet && systemctl restart kubelet
+```
 14. 在3台主机中分别执行kubeadmconfig.sh生成配置文件config.yaml
 15. 在host1主机中首先执行kubeadm初始化操作
 > 命令如下：
-> kubeadm init --config config.yaml
->
+```
+ kubeadm init --config config.yaml
+```
 16. 执行初始化后操作
-> mkdir -p $HOME/.kube
->
-> sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
->
-> sudo chown $(id -u):$(id -g) $HOME/.kube/config
->
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
 17. 将主机host1中kubeadm初始化后生成的证书拷贝至host2,host3相应目录下
-> scp -r /etc/kubernetes/pki root@172.18.0.155:/etc/kubernetes/
->
-> scp -r /etc/kubernetes/pki root@172.18.0.156:/etc/kubernetes/
-> 
+```
+ scp -r /etc/kubernetes/pki root@172.18.0.155:/etc/kubernetes/
+
+ scp -r /etc/kubernetes/pki root@172.18.0.156:/etc/kubernetes/
+```
 18. 为主机host1安装网络组件 podnetwork【这里选用flannel】
-> kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-> 
-> systemctl stop kubelet
-> 
-> systemctl restart docker
-> 
-> docker pull registry.cn-hangzhou.aliyuncs.com/osoulmate/flannel:v0.10.0-amd64
->
-> systemctl start kubelet
-> 
+```
+ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+ 
+ systemctl stop kubelet
+ 
+ systemctl restart docker
+ 
+ docker pull registry.cn-hangzhou.aliyuncs.com/osoulmate/flannel:v0.10.0-amd64
+
+ systemctl start kubelet
+``` 
 19. 在host2,host3上执行kubeadm初始化操作
-> kubeadm init --config config.yaml
-> 
-> kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-> 
-> systemctl stop kubelet
->
-> systemctl restart docker
->
-> docker pull registry.cn-hangzhou.aliyuncs.com/osoulmate/flannel:v0.10.0-amd64
->
-> systemctl start kubelet
->
+```
+ kubeadm init --config config.yaml
+ 
+ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+ 
+ systemctl stop kubelet
+
+ systemctl restart docker
+
+ docker pull registry.cn-hangzhou.aliyuncs.com/osoulmate/flannel:v0.10.0-amd64
+
+ systemctl start kubelet
+```
 20. 查看集群各节点状态
 > [root@localhost ~]# kubectl get nodes
 >
@@ -205,7 +210,9 @@ yum install kubelet kubeadm kubectl kubernetes-cni docker -y
 21. 高可用验证
 > 将host1关机，在host3上执行
 >
-> while true; do  sleep 1; kubectl get node;date; done
+```
+ while true; do  sleep 1; kubectl get node;date; done
+```
 >
 > 在host2上观察keepalived是否已切换为主状态。
 
