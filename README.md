@@ -99,6 +99,7 @@
 >> {
 >>> "registry-mirrors": ["https://wcmntott.mirror.aliyuncs.com"] 
 >> }
+>>
 > EOF
 >
 13. 在3台主机分别执行以下命令
