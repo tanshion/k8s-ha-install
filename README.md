@@ -1,8 +1,8 @@
-# ![k8s](https://pan.baidu.com/s/1qD1SKzjJCYuYmDZwjtB9mA)
+# ![k8s](https://github.com/osoulmate/k8s-ha-install/blob/master/images/k8slogo.jpg)
 ## 三节点k8s高可用集群部署
 ### 实验环境：
 1. 3台centos 1611版本虚拟机，mini安装。Linux localhost 3.10.0-514.el7.x86_64 #1 SMP Tue Nov 22 16:42:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
-2. > docker version
+2. docker version
 >
 >>Client:
 >>
