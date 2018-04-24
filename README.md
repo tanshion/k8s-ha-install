@@ -81,17 +81,20 @@
 >
 6. 在3台主机中分别执行脚本 etcd.sh
 7. 查看keepalived状态。如下图所示，则三个节点机之间心跳正常。
->systemctl status keepalived
+``` 
+systemctl status keepalived 
+```
 8. 查看etcd运行状态。
 在host1,host2,host3分别执行如下命令：
-> etcdctl  --endpoints=https://${NODE_IP}:2379  --ca-file=/etc/etcd/ssl/ca.pem  --cert-file=/etc/etcd/ssl/etcd.pem  --key-file=/etc/etcd/ssl/etcd-key.pem cluster-health
->
+```
+etcdctl  --endpoints=https://${NODE_IP}:2379  --ca-file=/etc/etcd/ssl/ca.pem  --cert-file=/etc/etcd/ssl/etcd.pem  --key-file=/etc/etcd/ssl/etcd-key.pem cluster-health
+```
 9. 在3台主机上安装kubeadm,kubelet,kubctl,docker
-> yum install kubelet kubeadm kubectl kubernetes-cni docker -y
->
+```
+yum install kubelet kubeadm kubectl kubernetes-cni docker -y
+```
 10. 在3台主机禁用docker启动项SELinux
-> sed -i 's/--selinux-enabled/--selinux-enabled=false/g' /etc/sysconfig/docke
->
+``` sed -i 's/--selinux-enabled/--selinux-enabled=false/g' /etc/sysconfig/docker ```
 11. 在3台主机的kubelet配置文件中添加如下参数
 > sed -i '9a\Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/osoulmate/pause-amd64:3.0"' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 >
