@@ -3,58 +3,76 @@
 1. 3台centos 1611版本虚拟机，mini安装。Linux localhost 3.10.0-514.el7.x86_64 #1 SMP Tue Nov 22 16:42:41 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
 2. > docker version
 >
- >Client:
- >
- > Version:         1.13.1
- >
- > API version:     1.26
- >
- > Package version: <unknown>
- >
- > Go version:      go1.8.3
- >
- > Git commit:      774336d/1.13.1
- >
- > Built:           Wed Mar  7 17:06:16 2018
- >
- > OS/Arch:         linux/amd64
-
- Server:
- Version:         1.13.1
- API version:     1.26 (minimum version 1.12)
- Package version: <unknown>
- Go version:      go1.8.3
- Git commit:      774336d/1.13.1
- Built:           Wed Mar  7 17:06:16 2018
- OS/Arch:         linux/amd64
- Experimental:    false
+ >>Client:
+ >>
+ >> Version:         1.13.1
+ >>
+ >> API version:     1.26
+ >>
+ >> Package version: <unknown>
+ >>
+ >> Go version:      go1.8.3
+ >>
+ >> Git commit:      774336d/1.13.1
+ >>
+ >> Built:           Wed Mar  7 17:06:16 2018
+ >>
+ >> OS/Arch:         linux/amd64
+ >> Server:
+ >>
+ >> Version:         1.13.1
+ >>
+ >> API version:     1.26 (minimum version 1.12)
+ >>
+ >> Package version: <unknown>
+ >>
+ >> Go version:      go1.8.3
+ >>
+ >> Git commit:      774336d/1.13.1
+ >>
+ >> Built:           Wed Mar  7 17:06:16 2018
+ >>
+ >> OS/Arch:         linux/amd64
+ >>
+ >> Experimental:    false
+ >>
 3. etcd Version: 3.1.13
 4. kubeadm，kubelet，kubectl，kube-cni版本如下：
--rw-r--r--  1 root    root    18176678 Mar 30 00:08 5844c6be68e95a741f1ad403e5d4f6962044be060bc6df9614c2547fdbf91ae5-kubelet-1.10.0-0.x86_64.rpm
--rw-r--r--  1 root    root    17767206 Mar 30 00:07 8b0cb6654a2f6d014555c6c85148a5adc5918de937f608a30b0c0ae955d8abce-kubeadm-1.10.0-0.x86_64.rpm
--rw-r--r--  1 root    root     7945458 Mar 30 00:07 9ff2e28300e012e2b692e1d4445786f0bed0fd5c13ef650d61369097bfdd0519-kubectl-1.10.0-0.x86_64.rpm
--rw-r--r--  1 root    root     9008838 Mar  5 21:56 fe33057ffe95bfae65e2f269e1b05e99308853176e24a4d027bc082b471a07c0-kubernetes-cni-0.6.0-0.x86_64.rpm
+> -rw-r--r--  1 root    root    18176678 Mar 30 00:08 5844c6be68e95a741f1ad403e5d4f6962044be060bc6df9614c2547fdbf91ae5-kubelet-1.10.0-> 0.x86_64.rpm
+> -rw-r--r--  1 root    root    17767206 Mar 30 00:07 8b0cb6654a2f6d014555c6c85148a5adc5918de937f608a30b0c0ae955d8abce-kubeadm-1.10.0-0.x86_64.rpm
+> -rw-r--r--  1 root    root     7945458 Mar 30 00:07 9ff2e28300e012e2b692e1d4445786f0bed0fd5c13ef650d61369097bfdd0519-kubectl-1.10.0-> 0.x86_64.rpm
+> -rw-r--r--  1 root    root     9008838 Mar  5 21:56 fe33057ffe95bfae65e2f269e1b05e99308853176e24a4d027bc082b471a07c0-kubernetes-cni-0.6.0-0.x86_64.rpm
 5. k8s网络组件：flannel:v0.10.0-amd64
 6. 实验网络规划如下：
-host1 172.18.0.154/22 
-host2 172.18.0.155/22
-host3 172.18.0.156/22
+> host1 172.18.0.154/22 
+>
+> host2 172.18.0.155/22
+>
+> host3 172.18.0.156/22
+>
 VIP 172.18.0.192/22
 7. [视频教程](https://pan.baidu.com/s/1XVagd765eGacuoR_cgesiQ)
-##安装步骤：
+## 安装步骤：
 0. [下载脚本](https://pan.baidu.com/s/1oK7PRLeeYHrouNCRgIQlcQ)
 1. __在3台主机中执行基础环境配置脚本 base-env-config.sh__
 2. __在主机1执行脚本 host1-base-env.sh__
 3. __在主机2执行脚本 host2-base-env.sh__
 4. __在主机3执行脚本 host3-base-env.sh__
 5. __在host1主机执行如下命令__
-[root@host1~]# ll /etc/etcd/ssl/
-total 12
--rw-r--r--. 1 root root 1387 Mar 30 16:04 ca.pem
--rw-------. 1 root root 1675 Mar 30 16:04 etcd-key.pem
--rw-r--r--. 1 root root 1452 Mar 30 16:04 etcd.pem
-[root@host1 ~]# scp -r /etc/etcd/ssl root@172.18.0.155:/etc/etcd/
-[root@host1 ~]# scp -r /etc/etcd/ssl root@172.18.0.156:/etc/etcd/
+> [root@host1~]# ll /etc/etcd/ssl/
+>
+> total 12
+>
+> -rw-r--r--. 1 root root 1387 Mar 30 16:04 ca.pem
+>
+> -rw-------. 1 root root 1675 Mar 30 16:04 etcd-key.pem
+>
+> -rw-r--r--. 1 root root 1452 Mar 30 16:04 etcd.pem
+>
+> [root@host1 ~]# scp -r /etc/etcd/ssl root@172.18.0.155:/etc/etcd/
+>
+> [root@host1 ~]# scp -r /etc/etcd/ssl root@172.18.0.156:/etc/etcd/
+>
 6. 在3台主机中分别执行脚本 etcd.sh
 7. 查看keepalived状态。如下图所示，则三个节点机之间心跳正常。
 systemctl status keepalived
