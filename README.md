@@ -95,13 +95,12 @@
 > sed -i '9a\Environment="KUBELET_EXTRA_ARGS=--pod-infra-container-image=registry.cn-hangzhou.aliyuncs.com/osoulmate/pause-amd64:3.0"' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 >
 12. 在3台主机添加docker加速器配置（可选）
-> cat <<EOF > /etc/docker/daemon.json
->> {
->>> "registry-mirrors": ["https://wcmntott.mirror.aliyuncs.com"] 
->> }
->>
-> EOF
->
+''' cat <<EOF > /etc/docker/daemon.json
+ {
+    "registry-mirrors": ["https://wcmntott.mirror.aliyuncs.com"] 
+ }
+ EOF
+'''
 13. 在3台主机分别执行以下命令
 > systemctl daemon-reload
 >
