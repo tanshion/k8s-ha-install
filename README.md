@@ -59,11 +59,11 @@
 7. [视频教程](https://pan.baidu.com/s/1XVagd765eGacuoR_cgesiQ)
 ### 安装步骤：
 0. [下载脚本](https://pan.baidu.com/s/1oK7PRLeeYHrouNCRgIQlcQ)
-1. __在3台主机中执行基础环境配置脚本 base-env-config.sh__
-2. __在主机1执行脚本 host1-base-env.sh__
-3. __在主机2执行脚本 host2-base-env.sh__
-4. __在主机3执行脚本 host3-base-env.sh__
-5. __在host1主机执行如下命令__
+1. 在3台主机中执行基础环境配置脚本 base-env-config.sh
+2. 在主机1执行脚本 host1-base-env.sh
+3. 在主机2执行脚本 host2-base-env.sh
+4. 在主机3执行脚本 host3-base-env.sh
+5. 在host1主机执行如下命令
 > [root@host1~]# ll /etc/etcd/ssl/
 >
 > total 12
@@ -80,7 +80,7 @@
 >
 6. 在3台主机中分别执行脚本 etcd.sh
 7. 查看keepalived状态。如下图所示，则三个节点机之间心跳正常。
->>systemctl status keepalived
+>systemctl status keepalived
 8. 查看etcd运行状态。
 在host1,host2,host3分别执行如下命令：
 > etcdctl  --endpoints=https://${NODE_IP}:2379  --ca-file=/etc/etcd/ssl/ca.pem  --cert-file=/etc/etcd/ssl/etcd.pem  --key-file=/etc/etcd/ssl/etcd-key.pem cluster-health
@@ -97,9 +97,10 @@
 12. 在3台主机添加docker加速器配置（可选）
 > cat <<EOF > /etc/docker/daemon.json
 >> {
-        >>> "registry-mirrors": ["https://wcmntott.mirror.aliyuncs.com"] 
+>>> "registry-mirrors": ["https://wcmntott.mirror.aliyuncs.com"] 
 >> }
-EOF
+> EOF
+>
 13. 在3台主机分别执行以下命令
 > systemctl daemon-reload
 >
@@ -110,7 +111,7 @@ EOF
 14. 在3台主机中分别执行kubeadmconfig.sh生成配置文件config.yaml
 15. 在host1主机中首先执行kubeadm初始化操作
 > 命令如下：
->> kubeadm init --config config.yaml
+> kubeadm init --config config.yaml
 >
 16. 执行初始化后操作
 > mkdir -p $HOME/.kube
