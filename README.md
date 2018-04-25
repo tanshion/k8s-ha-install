@@ -1,6 +1,6 @@
 
 <div align=center>
-![k8s](https://github.com/osoulmate/k8s-ha-install/blob/master/images/k8slogo.jpg) 
+ <img src="https://github.com/osoulmate/k8s-ha-install/blob/master/images/k8slogo.jpg" alt="k8s">
 </div>
 
 ## 三节点k8s高可用集群部署
